@@ -5,22 +5,6 @@ import {
 } from "firebase/auth";
 import { auth } from "./config";
 
-const getCurrentUserInfo = () => {
-  try {
-    const user = auth.currentUser;
-
-    if (user) {
-      user
-        .getIdTokenResult()
-        .then((res) => console.log("res.claims", res.claims));
-    }
-
-    return user;
-  } catch (error) {
-    console.log(`Auth.getCurrentUserInfo || ${error}`);
-  }
-};
-
 const signUp = async (email: string, password: string) => {
   try {
     const response = await createUserWithEmailAndPassword(
@@ -61,5 +45,4 @@ export const authModule = {
   signUp,
   signIn,
   logOut,
-  getCurrentUserInfo,
 };
