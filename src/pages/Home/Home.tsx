@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dbModule } from "../../db";
-import { authModule } from "../../firebase";
+import { auth, authModule } from "../../firebase";
 import { PostForm } from "./PostForm";
 import { Posts } from "./Posts";
 
 export const Home = () => {
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+
   const [posts, setPosts] = useState<any>([]);
   const navigate = useNavigate();
 
-  const info = authModule.getUserDataFromLocalStorage();
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      }
+
+      setLoading(false);
+    });
+  }, []);
 
   useEffect(() => {
-    if (!info) {
+    console.log(loading, user);
+    if (!loading && !user) {
       navigate("/login");
     }
-  }, [info, navigate]);
+  }, [loading, navigate, user]);
 
   const getPosts = async () => {
     const data = await dbModule.getPosts();
@@ -45,7 +57,7 @@ export const Home = () => {
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        <h4>Welcome: {info?.email}</h4>
+        {user?.email && <h4>Welcome: {user?.email}</h4>}
 
         <button onClick={handleLogOut}>Log out</button>
       </div>

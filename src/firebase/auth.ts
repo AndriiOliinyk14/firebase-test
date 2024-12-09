@@ -5,25 +5,19 @@ import {
 } from "firebase/auth";
 import { auth } from "./config";
 
-export const authKey = "user_info";
-
-const saveUserToLocalStorage = (data: any) => {
-  localStorage.setItem(authKey, JSON.stringify(data));
-};
-
-const removeUserFromLocalStorage = () => {
-  localStorage.removeItem(authKey);
-};
-
-const getUserDataFromLocalStorage = () => {
+const getCurrentUserInfo = () => {
   try {
-    const userData = localStorage.getItem(authKey);
+    const user = auth.currentUser;
 
-    if (userData) {
-      return JSON.parse(userData);
+    if (user) {
+      user
+        .getIdTokenResult()
+        .then((res) => console.log("res.claims", res.claims));
     }
+
+    return user;
   } catch (error) {
-    console.log(error);
+    console.log(`Auth.getCurrentUserInfo || ${error}`);
   }
 };
 
@@ -36,10 +30,6 @@ const signUp = async (email: string, password: string) => {
     );
 
     if (response.user) {
-      saveUserToLocalStorage({
-        email: response.user.email,
-      });
-
       return response.user;
     }
   } catch (error) {
@@ -52,10 +42,6 @@ const signIn = async (email: string, password: string) => {
     const response = await signInWithEmailAndPassword(auth, email, password);
 
     if (response.user) {
-      saveUserToLocalStorage({
-        email: response.user.email,
-      });
-
       return response.user;
     }
   } catch (error) {
@@ -66,7 +52,6 @@ const signIn = async (email: string, password: string) => {
 const logOut = async () => {
   try {
     await signOut(auth);
-    removeUserFromLocalStorage();
   } catch (error) {
     console.log(`Auth.signIn || ${error}`);
   }
@@ -76,5 +61,5 @@ export const authModule = {
   signUp,
   signIn,
   logOut,
-  getUserDataFromLocalStorage,
+  getCurrentUserInfo,
 };
