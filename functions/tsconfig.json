@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "target": "ES2018",
     "module": "commonjs",
+    "lib": ["ES2018"],
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
   },
   "compileOnSave": true,
   "include": [
