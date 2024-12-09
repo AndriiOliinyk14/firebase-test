@@ -7,7 +7,7 @@ import { auth } from "./config";
 
 export const authKey = "user_info";
 
-const saveUserToLocalStorage = (data) => {
+const saveUserToLocalStorage = (data: any) => {
   localStorage.setItem(authKey, JSON.stringify(data));
 };
 
