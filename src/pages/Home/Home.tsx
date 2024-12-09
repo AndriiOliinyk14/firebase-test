@@ -19,7 +19,6 @@ export const Home = () => {
 
   const getPosts = async () => {
     const data = await dbModule.getPosts();
-    console.log(data);
     setPosts(data);
   };
 
@@ -55,7 +54,7 @@ export const Home = () => {
         <PostForm onSuccess={onAddPost} />
       </div>
       <div>
-        <h4>Posts:</h4>
+        <h4>Top 10 Posts:</h4>
 
         <Posts data={posts} />
       </div>

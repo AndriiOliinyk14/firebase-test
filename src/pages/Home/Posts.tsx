@@ -9,7 +9,7 @@ export const Posts: FC<PostsProps> = ({ data }) => {
     <ul>
       {data?.map((post) => {
         return (
-          <li style={{ textAlign: "left" }}>
+          <li key={post.id} style={{ textAlign: "left" }}>
             <p>
               <strong>Title:</strong> {post.title}
             </p>
